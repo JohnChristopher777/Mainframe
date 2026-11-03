@@ -1,3 +1,9 @@
 zapp.yaml
 
 HCL-Mainframe/
+
+_superbol/
+
+bin/
+
+.vscode/

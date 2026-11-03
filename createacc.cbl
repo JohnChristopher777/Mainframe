@@ -1,46 +1,47 @@
-IDENTIFICATION DIVISION.
-PROGRAM-ID. CREATEACC.
-AUTHOR. JOHN.
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. CREATEACC.
+       AUTHOR. JOHN.
 
-DATA DIVISION.
-WORKING-STORAGE SECTION.
-01 NAME PIC X(30).
-01 AGE-TEXT PIC X(3).
-01 AGE PIC 9(3).
-01 ACCOUNT-NO PIC X(20).
-01 TIME-STAMP PIC X(16).
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  NAME            PIC X(30).
+       01  AGE-TEXT        PIC X(3).
+       01  AGE             PIC 9(3).
+       01  ACCOUNT-NO      PIC X(20).
+       01  TIME-STAMP      PIC X(21).
 
-PROCEDURE DIVISION.
-    DISPLAY "ENTER NAME: "
-    ACCEPT NAME
+       PROCEDURE DIVISION.
+           DISPLAY "ENTER NAME: "
+           ACCEPT NAME
 
-    DISPLAY "ENTER AGE: "
-    ACCEPT AGE-TEXT
+           DISPLAY "ENTER AGE: "
+           ACCEPT AGE-TEXT
 
-    IF NAME = SPACES
-        DISPLAY "INVALID NAME"
-    ELSE
-        IF FUNCTION TEST-NUMVAL(AGE-TEXT) = 0
-            COMPUTE AGE = FUNCTION NUMVAL(AGE-TEXT)
+           IF NAME = SPACES
+               DISPLAY "INVALID NAME"
+           ELSE
+               IF FUNCTION TEST-NUMVAL(AGE-TEXT) = 0
+                   COMPUTE AGE = FUNCTION NUMVAL(AGE-TEXT)
 
-            IF AGE >= 18
-                MOVE FUNCTION CURRENT-DATE
-                    TO TIME-STAMP
+                   IF AGE >= 18
+                       MOVE FUNCTION CURRENT-DATE
+                           TO TIME-STAMP
 
-                STRING "ACC-" TIME-STAMP
-                    INTO ACCOUNT-NO
-                END-STRING
+                       STRING "ACC-" DELIMITED BY SIZE
+                           TIME-STAMP(1:16) DELIMITED BY SIZE
+                           INTO ACCOUNT-NO
+                       END-STRING
 
-                DISPLAY "ACCOUNT CREATED!"
-                DISPLAY "ACCOUNT NO: " ACCOUNT-NO
-                DISPLAY "NAME: " NAME
-                DISPLAY "AGE: " AGE
-            ELSE
-                DISPLAY "REJECTED: MUST BE 18+"
-            END-IF
-        ELSE
-            DISPLAY "INVALID AGE"
-        END-IF
-    END-IF
+                       DISPLAY "ACCOUNT CREATED!"
+                       DISPLAY "ACCOUNT NO: " ACCOUNT-NO
+                       DISPLAY "NAME: " NAME
+                       DISPLAY "AGE: " AGE
+                   ELSE
+                       DISPLAY "REJECTED: MUST BE 18+"
+                   END-IF
+               ELSE
+                   DISPLAY "INVALID AGE"
+               END-IF
+           END-IF
 
-    GOBACK.
+           GOBACK.
