@@ -7,16 +7,16 @@
 
        01 TABLE-DATA.
           05 TXN-RECORD OCCURS 200 TIMES.
-             10 BRANCH-ID   PIC X(10).
-             10 TXN-AMT     PIC 9(9).
+             10 BRANCH-ID     PIC X(10).
+             10 TXN-AMT       PIC 9(9).
 
-       01 TXN-COUNT          PIC 9(3) VALUE 0.
-       01 I                  PIC 9(3) VALUE 0.
+       01 TXN-COUNT            PIC 9(3)  VALUE 0.
+       01 I                    PIC 9(3)  VALUE 0.
 
-       01 PREV-BRANCH        PIC X(10) VALUE SPACES.
-       01 GROUP-TOTAL        PIC 9(12) VALUE 0.
-       01 GRAND-TOTAL        PIC 9(12) VALUE 0.
-       01 PRINT-VAL          PIC Z(11)9.
+       01 PREV-BRANCH          PIC X(10) VALUE SPACES.
+       01 GROUP-TOTAL          PIC 9(12) VALUE 0.
+       01 GRAND-TOTAL          PIC 9(12) VALUE 0.
+       01 PRINT-VAL            PIC Z(11)9.
 
        PROCEDURE DIVISION.
 
@@ -25,6 +25,11 @@
 
            IF TXN-COUNT > 200
                DISPLAY "TOO MANY TRANSACTIONS"
+               GOBACK
+           END-IF
+
+           IF TXN-COUNT = 0
+               DISPLAY "NO TRANSACTIONS TO REPORT"
                GOBACK
            END-IF
 

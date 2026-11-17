@@ -7,14 +7,14 @@
 
        01 TABLE-DATA.
           05 TXN-RECORD OCCURS 100 TIMES.
-             10 TXN-ACC    PIC X(10).
-             10 TXN-AMT    PIC 9(9).
+             10 TXN-ACC       PIC X(10).
+             10 TXN-AMT       PIC 9(9).
 
-       01 TXN-COUNT         PIC 9(3) VALUE 0.
-       01 I                 PIC 9(3) VALUE 0.
-       01 VALID-RESULT      PIC X(1).
-       01 ACCEPT-COUNT      PIC 9(3) VALUE 0.
-       01 REJECT-COUNT      PIC 9(3) VALUE 0.
+       01 TXN-COUNT            PIC 9(3) VALUE 0.
+       01 I                    PIC 9(3) VALUE 0.
+       01 VALID-RESULT         PIC X(1) VALUE 'N'.
+       01 ACCEPT-COUNT         PIC 9(3) VALUE 0.
+       01 REJECT-COUNT         PIC 9(3) VALUE 0.
 
        PROCEDURE DIVISION.
 
@@ -41,6 +41,8 @@
 
            PERFORM VARYING I FROM 1 BY 1
                UNTIL I > TXN-COUNT
+
+               MOVE 'N' TO VALID-RESULT
 
                CALL 'VALIDATE-MOD' USING TXN-ACC(I)
                                          TXN-AMT(I)

@@ -5,9 +5,9 @@
        DATA DIVISION.
        LINKAGE SECTION.
 
-       01 LK-ACC-ID        PIC X(10).
-       01 LK-AMOUNT        PIC 9(9).
-       01 LK-RESULT        PIC X(1).
+       01 LK-ACC-ID            PIC X(10).
+       01 LK-AMOUNT            PIC 9(9).
+       01 LK-RESULT            PIC X(1).
 
        PROCEDURE DIVISION USING LK-ACC-ID LK-AMOUNT LK-RESULT.
 

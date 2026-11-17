@@ -7,20 +7,20 @@
 
        01 TABLE-DATA.
           05 TXN-RECORD OCCURS 200 TIMES.
-             10 TXN-ID      PIC X(10).
-             10 TXN-AMT     PIC 9(9).
+             10 TXN-ID        PIC X(10).
+             10 TXN-AMT       PIC 9(9).
 
        01 POSTED-TABLE.
           05 POSTED-ID OCCURS 200 TIMES PIC X(10).
 
-       01 TXN-COUNT          PIC 9(3) VALUE 0.
-       01 POSTED-COUNT       PIC 9(3) VALUE 0.
-       01 I                  PIC 9(3) VALUE 0.
-       01 J                  PIC 9(3) VALUE 0.
+       01 TXN-COUNT            PIC 9(3)  VALUE 0.
+       01 POSTED-COUNT         PIC 9(3)  VALUE 0.
+       01 I                    PIC 9(3)  VALUE 0.
+       01 J                    PIC 9(3)  VALUE 0.
 
-       01 FOUND              PIC X VALUE 'N'.
-       01 ACCEPT-TOTAL       PIC 9(12) VALUE 0.
-       01 PRINT-VAL          PIC Z(11)9.
+       01 FOUND                PIC X     VALUE 'N'.
+       01 ACCEPT-TOTAL         PIC 9(12) VALUE 0.
+       01 PRINT-VAL            PIC Z(11)9.
 
        PROCEDURE DIVISION.
 
@@ -67,7 +67,7 @@
                MOVE 'N' TO FOUND
 
                PERFORM VARYING J FROM 1 BY 1
-                   UNTIL J > POSTED-COUNT
+                   UNTIL J > POSTED-COUNT OR FOUND = 'Y'
 
                    IF TXN-ID(I) = POSTED-ID(J)
                        MOVE 'Y' TO FOUND
@@ -79,10 +79,15 @@
                    DISPLAY FUNCTION TRIM(TXN-ID(I))
                            " REJECTED: DUPLICATE"
                ELSE
-                   ADD TXN-AMT(I) TO ACCEPT-TOTAL
-                   ADD 1 TO POSTED-COUNT
-                   MOVE TXN-ID(I) TO POSTED-ID(POSTED-COUNT)
-                   DISPLAY FUNCTION TRIM(TXN-ID(I)) " ACCEPTED"
+                   IF POSTED-COUNT < 200
+                       ADD TXN-AMT(I) TO ACCEPT-TOTAL
+                       ADD 1 TO POSTED-COUNT
+                       MOVE TXN-ID(I) TO POSTED-ID(POSTED-COUNT)
+                       DISPLAY FUNCTION TRIM(TXN-ID(I)) " ACCEPTED"
+                   ELSE
+                       DISPLAY FUNCTION TRIM(TXN-ID(I))
+                               " REJECTED: POSTED TABLE FULL"
+                   END-IF
                END-IF
 
            END-PERFORM
