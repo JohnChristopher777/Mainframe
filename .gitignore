@@ -7,3 +7,5 @@ _superbol/
 bin/
 
 .vscode/
+
+.gitignore
