@@ -1,0 +1,54 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. WITHDRAWAL.
+       AUTHOR. JOHN.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+
+       01 WD-BALANCE           PIC 9(9)  VALUE 0.
+       01 WD-AMOUNT            PIC 9(9)  VALUE 0.
+       01 WD-STATUS            PIC X(1)  VALUE 'A'.
+       01 ATM-STATUS           PIC X(1)  VALUE 'Y'.
+       01 REMAINING-BAL        PIC 9(9)  VALUE 0.
+       01 PRINT-BAL            PIC Z(8)9.
+
+       PROCEDURE DIVISION.
+
+           DISPLAY "ENTER ACCOUNT BALANCE:"
+           ACCEPT WD-BALANCE
+
+           DISPLAY "ENTER WITHDRAWAL AMOUNT:"
+           ACCEPT WD-AMOUNT
+
+           DISPLAY "ENTER ACCOUNT STATUS (A=ACTIVE I=INACTIVE):"
+           ACCEPT WD-STATUS
+
+           DISPLAY "ENTER ATM STATUS (Y=AVAILABLE N=UNAVAILABLE):"
+           ACCEPT ATM-STATUS
+
+           IF WD-STATUS NOT = 'A'
+               DISPLAY "STATUS: REJECT_ACCOUNT_INACTIVE"
+               GOBACK
+           END-IF
+
+           IF ATM-STATUS NOT = 'Y'
+               DISPLAY "STATUS: REJECT_ATM_UNAVAILABLE"
+               GOBACK
+           END-IF
+
+           IF WD-AMOUNT <= 0
+               DISPLAY "STATUS: REJECT_INVALID_AMOUNT"
+               GOBACK
+           END-IF
+
+           IF WD-AMOUNT > WD-BALANCE
+               DISPLAY "STATUS: REJECT_INSUFFICIENT_FUNDS"
+               GOBACK
+           END-IF
+
+           COMPUTE REMAINING-BAL = WD-BALANCE - WD-AMOUNT
+           MOVE REMAINING-BAL TO PRINT-BAL
+           DISPLAY "STATUS: SUCCESS"
+           DISPLAY "REMAINING BALANCE: " FUNCTION TRIM(PRINT-BAL)
+
+           STOP RUN.
